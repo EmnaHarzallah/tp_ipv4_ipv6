@@ -1,96 +1,42 @@
-README – Explication du code tp_ipv4_ipv6.py
+# TP Fragmentation IPv4/IPv6
 
-1. Description générale
-   Ce script Python utilise la bibliothèque Scapy pour :
-   -créer des datagrammes IPv4 et IPv6,
-   -envoyer ces datagrammes sur le réseau,
-   -capturer des paquets IPv4 et IPv6,
-   -sauvegarder les captures dans des fichiers .pcap,
-   -afficher une analyse simple des champs principaux des datagrammes.
-   ->>Le but est d’observer concrètement les différences entre IPv4 et IPv6.
+## 📋 Description
 
-2. Bibliothèques utilisées
-   "from scapy.all import \*
-   import datetime"
-   Scapy : bibliothèque réseau permettant de créer, envoyer, capturer et analyser des paquets.
-   datetime : utilisée pour générer un nom unique pour les fichiers de capture.
+Ce projet permet d'étudier et comparer les mécanismes de fragmentation
+dans les protocoles IPv4 et IPv6.
 
-3. Définition des destinations
-   "ipv4_dst = "8.8.8.8"
-   ipv6_dst = "2001:4860:4860::8888""
+## 🛠️ Installation
 
-8.8.8.8 : adresse IPv4 du serveur DNS de Google.
-2001:4860:4860::8888 : adresse IPv6 du serveur DNS de Google.
-Ces adresses sont utilisées comme destinations pour les datagrammes envoyés.
+### Prérequis
 
-4. Création des datagrammes
-   "ipv4_packet = IP(dst=ipv4_dst)/ICMP()
-   ipv6_packet = IPv6(dst=ipv6_dst)/ICMPv6EchoRequest()"
+- Python 3.8 ou supérieur
+- Droits administrateur (pour les sockets raw)
 
-IP() : crée un en-tête IPv4.
-IPv6() : crée un en-tête IPv6.
-ICMP() : message ICMP (ping) pour IPv4.
-ICMPv6EchoRequest() : message ICMPv6 (ping) pour IPv6.
-Ces lignes construisent les datagrammes IPv4 et IPv6 complets.
+### Installation des dépendances
 
-5. Affichage du contenu des paquets
-   "ipv4_packet.show()
-   ipv6_packet.show()"
+```bash
+pip install -r requirements.txt
+```
 
-La méthode show() affiche tous les champs du datagramme :
-version
-adresses source et destination
-TTL / Hop Limit
-protocole / Next Header
-Cela permet de visualiser la structure des headers IPv4 et IPv6.
+COMMENT L'EXÉCUTER :
+bash :
 
-6. Envoi des paquets
-   "send(ipv4_packet)
-   send(ipv6_packet)"
-   Envoie les datagrammes sur le réseau.
-   L’envoi permet de générer du trafic réel à analyser.
-   L’exécution peut nécessiter les droits administrateur (sudo).
+# 1. Installation
 
-7. Capture des paquets
-   "capture_ipv4 = sniff(filter="ip", count=5, timeout=10)
-   capture_ipv6 = sniff(filter="ip6", count=5, timeout=10)"
+pip install -r requirements.txt
 
-sniff() capture les paquets réseau.
-filter="ip" : capture uniquement les paquets IPv4.
-filter="ip6" : capture uniquement les paquets IPv6.
-count=5 : capture 5 paquets.
-timeout=10 : arrêt automatique après 10 secondes.
+# 2. Préparation
 
-8. Sauvegarde des captures
-   "wrpcap(ipv4_file, capture_ipv4)
-   wrpcap(ipv6_file, capture_ipv6)"
-   Les paquets capturés sont enregistrés dans des fichiers .pcap.
-   Ces fichiers peuvent être ouverts avec Wireshark pour une analyse détaillée.
+# - Ouvrir Wireshark
 
-9. Analyse simple des paquets capturés
-   IPv4
-   print(f"Source: {pkt[IP].src}, Destination: {pkt[IP].dst}, TTL: {pkt[IP].ttl}, Protocol: {pkt[IP].proto}")
-   Champs analysés :
-   Adresse source
-   Adresse destination
-   TTL (Time To Live)
-   Protocole de la couche supérieure
+# - Filtrer: 'ip or ipv6'
 
-IPv6
-print(f"Source: {pkt[IPv6].src}, Destination: {pkt[IPv6].dst}, Hop Limit: {pkt[IPv6].hlim}, Next Header: {pkt[IPv6].nh}")
-Champs analysés :
-Adresse source
-Adresse destination
-Hop Limit
-Next Header
+# - Démarrer capture
 
-10. Conclusion
+# 3. Exécution (avec sudo)
 
-Ce script permet :
--de manipuler directement des datagrammes IPv4 et IPv6,
--d’observer leurs différences structurelles,
--de générer des fichiers de capture exploitables dans Wireshark,
--de comprendre les champs clés des en-têtes IPv4 et IPv6.
-Il constitue une base complète pour l’apprentissage de la capture et de l’analyse des datagrammes réseau.
+sudo python3 tp_fragmentation.py
 
+# 4. Analyse
 
+python3 analyse_results.py
